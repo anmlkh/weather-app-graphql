@@ -1,0 +1,40 @@
+{
+  "name": "weather-app-graphql",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0"
+  },
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anmlkh/weather-app-graphql.git"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "plugin:@bar/recommended"
+    ],
+    "env": {
+      "node": true
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anmlkh/weather-app-graphql/issues"
+  },
+  "homepage": "https://github.com/anmlkh/weather-app-graphql#readme"
+}
