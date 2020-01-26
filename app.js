@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const axios = require("axios");
 
 const app = express();
@@ -6,6 +7,8 @@ const app = express();
 if (app.get('env') === "development") {
   require("dotenv").config();
 }
+
+app.use(cors());
 
 app.get("/", async (req, res) => {
   res.send("weatherApi server");
