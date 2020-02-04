@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const axios = require("axios");
+
+const city = require("./city");
 
 const app = express();
 
@@ -17,25 +18,7 @@ app.get("/", async (req, res) => {
   );
 });
 
-app.get("/city", async (req, res) => {
-  axios
-    .get(process.env.CITY_ENDPOINT, {
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": process.env.CITY_HOST,
-        "x-rapidapi-key": process.env.CITY_KEY
-      },
-      params: {
-        location: req.query.name
-      }
-    })
-    .then(response => {
-      res.json(response.data.Results);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-});
+app.get("/city", city);
 
 const port = process.env.PORT || 5000;
 
