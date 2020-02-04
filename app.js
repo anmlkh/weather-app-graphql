@@ -11,7 +11,7 @@ if (app.get('env') === "development") {
 app.use(cors());
 
 app.get("/", async (req, res) => {
-  res.send("weatherApi server");
+  res.send(`weatherApi server is running in ${process.env.NODE_ENV || 'development'} mode`);
 });
 
 app.get("/city", async (req, res) => {
