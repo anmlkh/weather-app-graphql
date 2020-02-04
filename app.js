@@ -4,14 +4,17 @@ const axios = require("axios");
 
 const app = express();
 
-if (app.get('env') === "development") {
+if (app.get("env") === "development") {
   require("dotenv").config();
 }
 
 app.use(cors());
 
 app.get("/", async (req, res) => {
-  res.send("weatherApi server");
+  res.send(
+    `weatherApi server is running in ${process.env.NODE_ENV ||
+      "development"} mode`
+  );
 });
 
 app.get("/city", async (req, res) => {
