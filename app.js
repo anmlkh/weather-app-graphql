@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
-const city = require("./city");
+const graphql = require("./graphql");
 
 const app = express();
 
@@ -11,14 +11,14 @@ if (app.get("env") === "development") {
 
 app.use(cors());
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   res.send(
     `weatherApi server is running in ${process.env.NODE_ENV ||
       "development"} mode`
   );
 });
 
-app.get("/city", city);
+app.use("/graphql", graphql);
 
 const port = process.env.PORT || 5000;
 

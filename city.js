@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-module.exports = async (req, res) => {
-  axios
+module.exports = ({ name }) => {
+  return axios
     .get(process.env.CITY_ENDPOINT, {
       headers: {
         "content-type": "application/octet-stream",
@@ -9,12 +9,10 @@ module.exports = async (req, res) => {
         "x-rapidapi-key": process.env.CITY_KEY
       },
       params: {
-        location: req.query.name
+        location: name
       }
     })
-    .then(response => {
-      res.json(response.data.Results);
-    })
+    .then(response => response.data.Results)
     .catch(error => {
       console.log(error);
     });
