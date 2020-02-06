@@ -1,6 +1,6 @@
-import expressGraphql from "express-graphql";
-import { buildSchema } from "graphql";
-import city from "./city";
+import expressGraphql from 'express-graphql';
+import { buildSchema } from 'graphql';
+import city from './city';
 
 const schema = buildSchema(`
     type City {
@@ -21,11 +21,11 @@ const schema = buildSchema(`
 `);
 
 const rootValue = {
-  city
+  city,
 };
 
 export default expressGraphql({
   schema,
   rootValue,
-  graphiql: true
+  graphiql: true,
 });

@@ -1,7 +1,6 @@
-import axios from "axios";
-import { ParamsDictionary } from "express-serve-static-core";
+import axios from 'axios';
 
-interface City {
+interface ICity {
   name: string;
   country: string;
   c: string;
@@ -14,38 +13,43 @@ interface City {
   lon: string;
 }
 
-interface CitiesResponse {
+interface ICitiesResponse {
   data: {
-    Results: City[];
+    Results: ICity[];
   };
 }
 
-interface ICityRequestParams extends ParamsDictionary {
+interface ICityRequestParams {
   name: string;
 }
 
-export default async ({ name }: ICityRequestParams) => {
+export default async (
+  params: ICityRequestParams,
+): Promise<ICity[]> => {
   try {
-    const response: CitiesResponse = await axios.get(
+    const response: ICitiesResponse = await axios.get(
       process.env.CITY_ENDPOINT as string,
       {
         headers: {
-          "content-type": "application/octet-stream",
-          "x-rapidapi-host": process.env.CITY_HOST,
-          "x-rapidapi-key": process.env.CITY_KEY
+          'content-type': 'application/octet-stream',
+          'x-rapidapi-host': process.env.CITY_HOST,
+          'x-rapidapi-key': process.env.CITY_KEY,
         },
         params: {
-          location: name
-        }
-      }
+          location: params.name,
+        },
+      },
     );
 
-    return response.data.Results.map((item: City) => {
+    return response.data.Results.map((item: ICity) => {
       const [name, country] = item.name.split(/,\s/);
 
       return { ...item, name, country };
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
   }
+
+  return [];
 };

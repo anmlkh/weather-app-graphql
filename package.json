@@ -18,6 +18,8 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.0",
@@ -25,6 +27,8 @@
   },
   "scripts": {
     "dev": "nodemon",
+    "eslint": "eslint --ext \".ts\" ./src",
+    "eslint:fix": "eslint --ext .ts --fix src/**",
     "start": "tsc && node ./build/app.js",
     "prestart": "rm -rf ./build",
     "tsc": "tsc",
