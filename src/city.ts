@@ -24,26 +24,28 @@ interface ICityRequestParams extends ParamsDictionary {
   name: string;
 }
 
-export default ({ name }: ICityRequestParams) => {
-  return axios
-    .get(process.env.CITY_ENDPOINT as string, {
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": process.env.CITY_HOST,
-        "x-rapidapi-key": process.env.CITY_KEY
-      },
-      params: {
-        location: name
+export default async ({ name }: ICityRequestParams) => {
+  try {
+    const response: CitiesResponse = await axios.get(
+      process.env.CITY_ENDPOINT as string,
+      {
+        headers: {
+          "content-type": "application/octet-stream",
+          "x-rapidapi-host": process.env.CITY_HOST,
+          "x-rapidapi-key": process.env.CITY_KEY
+        },
+        params: {
+          location: name
+        }
       }
-    })
-    .then((response: CitiesResponse) =>
-      response.data.Results.map((item: City) => {
-        const [name, country] = item.name.split(/,\s/);
+    );
 
-        return { ...item, name, country };
-      })
-    )
-    .catch((error: Error) => {
-      console.log(error);
+    return response.data.Results.map((item: City) => {
+      const [name, country] = item.name.split(/,\s/);
+
+      return { ...item, name, country };
     });
+  } catch (error) {
+    console.log(error);
+  }
 };
