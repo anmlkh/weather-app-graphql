@@ -1,11 +1,12 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import graphqlMiddleware from "./graphqlMiddleware";
+import dotenv from "dotenv";
 
 const app = express();
 
 if (app.get("env") === "development") {
-  require("dotenv").config();
+  dotenv.config();
 }
 
 app.use(cors());
