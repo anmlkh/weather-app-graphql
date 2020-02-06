@@ -1,7 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-
-const graphql = require("./graphql");
+import express, { Request, Response } from "express";
+import cors from "cors";
+import graphqlMiddleware from "./graphqlMiddleware";
 
 const app = express();
 
@@ -11,14 +10,14 @@ if (app.get("env") === "development") {
 
 app.use(cors());
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send(
     `weatherApi server is running in ${process.env.NODE_ENV ||
       "development"} mode`
   );
 });
 
-app.use("/graphql", graphql);
+app.use("/graphql", graphqlMiddleware);
 
 const port = process.env.PORT || 5000;
 

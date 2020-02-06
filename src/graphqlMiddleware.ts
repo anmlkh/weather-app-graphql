@@ -1,7 +1,6 @@
-const express_graphql = require("express-graphql");
-const { buildSchema } = require("graphql");
-
-const city = require("./city");
+import expressGraphql from "express-graphql";
+import { buildSchema } from "graphql";
+import city from "./city";
 
 const schema = buildSchema(`
     type City {
@@ -25,7 +24,7 @@ const rootValue = {
   city
 };
 
-module.exports = express_graphql({
+export default expressGraphql({
   schema,
   rootValue,
   graphiql: true
