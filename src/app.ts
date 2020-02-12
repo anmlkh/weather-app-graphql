@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import graphqlMiddleware from './graphqlMiddleware';
+import apolloServer from './apolloServer';
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.get('/', (_req, res) => {
   );
 });
 
-app.use('/graphql', graphqlMiddleware);
+apolloServer.applyMiddleware({ app });
 
 const port = process.env.PORT || 5000;
 
