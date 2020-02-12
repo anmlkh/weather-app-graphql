@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { RESTDataSource, RequestOptions } from 'apollo-datasource-rest';
 
 interface ICity {
   name: string;
@@ -14,42 +14,39 @@ interface ICity {
 }
 
 interface ICitiesResponse {
-  data: {
-    Results: ICity[];
-  };
+  Results: ICity[];
 }
 
-interface ICityRootResolver {
-  name: string;
-}
+export default class CityResolver extends RESTDataSource {
+  public baseURL = process.env.CITY_ENDPOINT;
 
-export default async (
-  root: ICityRootResolver,
-): Promise<ICity[]> => {
-  try {
-    const response: ICitiesResponse = await axios.get(
-      process.env.CITY_ENDPOINT as string,
-      {
-        headers: {
-          'content-type': 'application/octet-stream',
-          'x-rapidapi-host': process.env.CITY_HOST,
-          'x-rapidapi-key': process.env.CITY_KEY,
-        },
-        params: {
-          location: root.name,
-        },
-      },
-    );
-
-    return response.data.Results.map((item: ICity) => {
-      const [name, country] = item.name.split(/,\s/);
-
-      return { ...item, name, country };
-    });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+  protected willSendRequest(request: RequestOptions) {
+    request.headers.set('content-type', 'application/octet-stream');
+    request.headers.set('x-rapidapi-host', this.context.CITY_HOST);
+    request.headers.set('x-rapidapi-key', this.context.CITY_KEY);
   }
 
-  return [];
-};
+  public async getCity(
+    cityName: string,
+  ): Promise<ICity[]> {
+    try {
+      const response: ICitiesResponse = await this.get(
+        '',
+        {
+          location: cityName,
+        },
+      );
+
+      return response.Results.map((item: ICity) => {
+        const [name, country] = item.name.split(/,\s/);
+
+        return { ...item, name, country };
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+
+    return [];
+  }
+}
