@@ -19,12 +19,12 @@ interface ICitiesResponse {
   };
 }
 
-interface ICityRequestParams {
+interface ICityRootResolver {
   name: string;
 }
 
 export default async (
-  params: ICityRequestParams,
+  root: ICityRootResolver,
 ): Promise<ICity[]> => {
   try {
     const response: ICitiesResponse = await axios.get(
@@ -36,7 +36,7 @@ export default async (
           'x-rapidapi-key': process.env.CITY_KEY,
         },
         params: {
-          location: params.name,
+          location: root.name,
         },
       },
     );
