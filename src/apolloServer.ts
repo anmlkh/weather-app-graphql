@@ -9,9 +9,13 @@ const resolvers = {
   },
 };
 
+const enableDebugMode = Boolean(process.env.DEBUG_MODE);
+
 export default new ApolloServer({
   typeDefs,
   resolvers,
+  introspection: enableDebugMode,
+  playground: enableDebugMode,
   dataSources: () => ({
     city: new CityResolver(),
   }),
