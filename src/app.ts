@@ -5,7 +5,7 @@ import apolloServer from './apolloServer';
 
 const app = express();
 
-if (app.get('env') === 'development') {
+if (process.env.NODE_ENV === 'development') {
   dotenv.config();
 }
 

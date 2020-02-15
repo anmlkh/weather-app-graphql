@@ -25,7 +25,7 @@
     "ts-node": "^8.6.2"
   },
   "scripts": {
-    "dev": "nodemon",
+    "dev": "NODE_ENV=development nodemon",
     "eslint": "eslint --ext \".ts\" ./src",
     "eslint:fix": "eslint --ext .ts --fix src/**",
     "start": "tsc && node ./build/app.js",
