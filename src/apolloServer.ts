@@ -19,8 +19,7 @@ export default new ApolloServer({
   }),
   context: () => (
     {
-      CITY_HOST: process.env.CITY_HOST as string,
-      CITY_KEY: process.env.CITY_KEY as string,
+      GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
     }
   ),
 });
