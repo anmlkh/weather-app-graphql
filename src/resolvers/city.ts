@@ -1,16 +1,17 @@
 import { RESTDataSource, RequestOptions } from 'apollo-datasource-rest';
 
+interface ICityData {
+  id: number;
+  name: string;
+  sys: {
+    country: string;
+  };
+}
+
 interface ICity {
+  id: number;
   name: string;
   country: string;
-  c: string;
-  zmw: string;
-  tz: string;
-  tzs: string;
-  l: string;
-  ll: string;
-  lat: string;
-  lon: string;
 }
 
 interface ICitiesResponse {
@@ -18,7 +19,7 @@ interface ICitiesResponse {
 }
 
 export default class CityResolver extends RESTDataSource {
-  public baseURL = process.env.CITY_ENDPOINT;
+  public baseURL = process.env.CITY_AUTOCOMPLETE_ENDPOINT;
 
   protected willSendRequest(request: RequestOptions) {
     request.headers.set('content-type', 'application/octet-stream');
@@ -26,9 +27,7 @@ export default class CityResolver extends RESTDataSource {
     request.headers.set('x-rapidapi-key', this.context.CITY_KEY);
   }
 
-  public async getCity(
-    cityName: string,
-  ): Promise<ICity[]> {
+  public async findCity(cityName: string): Promise<ICity[]> {
     try {
       const response: ICitiesResponse = await this.get(
         '',
