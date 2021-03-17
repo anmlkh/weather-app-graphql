@@ -1,31 +1,16 @@
 import { RESTDataSource, RequestOptions } from 'apollo-datasource-rest';
 
-interface ICityData {
-  id: number;
-  name: string;
-  sys: {
-    country: string;
-  };
-}
-
 interface ICity {
   name: string;
-  country: string;
+  country?: string;
   c: string;
-  zmw: string;
-  tz: string;
-  tzs: string;
-  l: string;
-  ll: string;
-  lat: string;
-  lon: string;
 }
 
 interface ICitiesResponse {
   Results: ICity[];
 }
 
-export default class CityResolver extends RESTDataSource {
+export default class CityAutocompleteResolver extends RESTDataSource {
   public baseURL = process.env.CITY_AUTOCOMPLETE_ENDPOINT;
 
   protected willSendRequest(request: RequestOptions) {
@@ -34,7 +19,7 @@ export default class CityResolver extends RESTDataSource {
     request.headers.set('x-rapidapi-key', this.context.CITY_AUTOCOMPLETE_KEY);
   }
 
-  public async getCity(
+  public async getCitiesList(
     cityName: string,
   ): Promise<ICity[]> {
     try {
