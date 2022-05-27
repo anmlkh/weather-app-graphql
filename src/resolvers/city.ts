@@ -1,51 +1,37 @@
 import { RESTDataSource, RequestOptions } from 'apollo-datasource-rest';
-
-interface ICity {
-  name: string;
-  country: string;
-}
-
-/* eslint-disable camelcase */
-interface IGoogleCity {
-  description: string;
-  structured_formatting: {
-    main_text: string;
-    main_text_matched_substrings: any;
-    secondary_text: string;
-  },
-  terms: { offset: number, value: string; }[],
-  types: string[];
-}
-/* eslint-enable camelcase */
-
-interface ICitiesResponse {
-  predictions: IGoogleCity[];
-}
+import {
+  City, CitiesResponse, GoogleCity, CityResponse, Location,
+} from '../types/city';
 
 export default class CityResolver extends RESTDataSource {
-  public baseURL = process.env.CITY_ENDPOINT;
+  private key: string;
 
-  protected willSendRequest(request: RequestOptions) {
-    request.params.set('key', this.context.GOOGLE_API_KEY);
+  constructor(host: string, key: string) {
+    super();
+
+    this.baseURL = host;
+    this.key = key;
   }
 
-  public async getCity(
-    cityName: string,
-  ): Promise<ICity[]> {
-    try {
-      const response: ICitiesResponse = await this.get(
-        '',
-        {
-          input: cityName,
-        },
-      );
+  protected willSendRequest(request: RequestOptions) {
+    request.params.set('key', this.key);
+    request.params.set('language', 'en');
+  }
 
-      return response.predictions.map((item: IGoogleCity) => {
-        const temsCount = item.terms.length;
+  public async getCitiesList(cityName: string): Promise<City[]> {
+    try {
+      const response: CitiesResponse = await this.get('/autocomplete/json', {
+        input: cityName,
+        types: '(cities)',
+      });
+
+      return response.predictions.map((item: GoogleCity) => {
+        const termsCount = item.terms.length;
         const name = item.terms[0].value;
-        const country = item.terms[temsCount - 1].value;
+        const country = item.terms[termsCount - 1].value;
 
         return {
+          placeId: item.place_id,
           name,
           country,
         };
@@ -56,5 +42,21 @@ export default class CityResolver extends RESTDataSource {
     }
 
     return [];
+  }
+
+  public async getCityLocation(placeId: string): Promise<Location | null> {
+    try {
+      const response: CityResponse = await this.get('/details/json', {
+        place_id: placeId,
+        fields: 'geometry',
+      });
+
+      return response.result.geometry.location;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+
+    return null;
   }
 }

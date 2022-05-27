@@ -1,11 +1,19 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
-type City {
+  type City {
     name: String!
     country: String!
-}
-type Query {
-    city(name: String): [City]
-}
+    placeId: String!
+  }
+
+  type Location {
+    lat: Float!
+    lng: Float!
+  }
+
+  type Query {
+    cities(name: String): [City]
+    cityLocation(placeId: String): Location
+  }
 `;
